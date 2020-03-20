@@ -3,11 +3,6 @@
 require 'selenium-webdriver'
 
 def search_lyric(search_word)
-  options = Selenium::WebDriver::Chrome::Options.new
-  options.binary = ENV.fetch('GOOGLE_CHROME_SHIM')
-  options.add_argument('headless')
-  options.add_argument('disable-gpu')
-
   driver = Selenium::WebDriver.for :chrome
   driver.navigate.to 'https://www.uta-net.com/user/index_search/search1.html'
   wait = Selenium::WebDriver::Wait.new(timeout: 30)
