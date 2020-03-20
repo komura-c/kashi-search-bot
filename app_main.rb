@@ -2,6 +2,7 @@
 
 require 'sinatra'
 require 'line/bot'
+require './search'
 
 get '/' do
   'Hello world'
@@ -29,10 +30,13 @@ post '/callback' do
     when Line::Bot::Event::Message
       case event.type
       when Line::Bot::Event::MessageType::Text
+        search_word = event.message['text']
+        search_lyric(search_word)
         message = {
           type: 'text',
-          text: event.message['text'] # オウム返し
+          text: @message
         }
+
         client.reply_message(event['replyToken'], message)
       when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
