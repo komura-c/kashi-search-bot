@@ -40,11 +40,6 @@ post '/callback' do
         search_lyric
 
         if @error.nil?
-          message2 = {
-            'type' => 'text',
-            'text' => @error
-          }
-        else
           columns = []
           @songs.each do |song|
             column = {
@@ -61,6 +56,11 @@ post '/callback' do
             'type' => 'template',
             'altText' => '検索結果が表示できません',
             'template' => template
+          }
+        else
+          message2 = {
+            'type' => 'text',
+            'text' => @error
           }
         end
 
