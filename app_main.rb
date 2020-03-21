@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 require 'sinatra'
 require 'line/bot'
@@ -32,19 +32,22 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         @search_word = event.message['text']
 
-        search_lyric
+        # search_lyric
+        @songs = [{ 'title' => 'ずっと - DOBERMAN INFINITY', 'lyric' => 'キスの意味も　空の青さも 知らなかったよ　君と出逢うまで その手握る為　涙繰り返して 時には誰かを　傷付けてきたんだろう マジくらった　マジで泣いた そんな季節に君と出会った 目に留まっ...' },
+                  { 'title' => '白日 - Uru', 'lyric' => '時には誰かを 知らず知らずのうちに 傷つけてしまったり 失ったりして初めて 犯した罪を知る 戻れないよ、昔のようには 煌めいて見えたとしても 明日へと歩き出さなきゃ 雪が降り頻ろうとも ...' }]
 
         if @error.nil?
           columns = []
           @songs.each do |song|
-            column = {}
-            column['title'] = song['title'],
-                              column['text'] = song['lyric'],
-                              column['actions'] = {
-                                'type' => 'message',
-                                'label' => 'この曲ですか？',
-                                'text' => 'お役に立ててよかったです！'
-                              }
+            column = {
+              'title' => song['title'],
+              'text' => @search_word,
+              'actions' => {
+                'type' => 'message',
+                'label' => 'この曲ですか？',
+                'text' => 'お役に立ててよかったです！'
+              }
+            }
             columns.push(column)
           end
           template = {
