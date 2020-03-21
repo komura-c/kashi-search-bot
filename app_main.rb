@@ -31,12 +31,40 @@ post '/callback' do
       case event.type
       when Line::Bot::Event::MessageType::Text
         @search_word = event.message['text']
-        search_lyric
-        message = {
-          type: 'text',
-          text: @message
+        message1 = {
+          'type' => 'text',
+          'text' => '検索しています…'
         }
-        client.reply_message(event['replyToken'], message)
+        client.reply_message(event['replyToken'], message1)
+
+        search_lyric
+
+        if @error.present?
+          message2 = {
+            'type' => 'text',
+            'text' => @error
+          }
+        else
+          columns = []
+          @songs.each do |song|
+            column = {
+              'title' => song['title'],
+              'text' => song['lyric']
+            }
+            columns.push(column)
+          end
+          template = {
+            'type' => 'carousel',
+            'columns' => columns
+          }
+          message2 = {
+            'type' => 'template',
+            'altText' => '検索結果が表示できません',
+            'template' => template
+          }
+        end
+
+        client.reply_message(event['replyToken'], message2)
       when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
         tf = Tempfile.open('content')
