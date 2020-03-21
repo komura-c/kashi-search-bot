@@ -32,62 +32,30 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         @search_word = event.message['text']
 
-        search_lyric
+        # search_lyric
 
-        if @error.nil?
-          columns = [
-            {
-              'title' => @songs[0]['title'],
-              'text' => @songs[0]['lyric'],
-              'actions' => {
-                'type' => 'message',
-                'label' => 'この曲ですか？',
-                'text' => 'お役に立ててよかったです！'
-              }
-            },
-            {
-              'title' => @songs[1]['title'],
-              'text' => @songs[1]['lyric'],
-              'actions' => {
-                'type' => 'message',
-                'label' => 'この曲ですか？',
-                'text' => 'お役に立ててよかったです！'
-              }
-            },
-            {
-              'title' => @songs[2]['title'],
-              'text' => @songs[2]['lyric'],
-              'actions' => {
-                'type' => 'message',
-                'label' => 'この曲ですか？',
-                'text' => 'お役に立ててよかったです！'
-              }
-            },
-            {
-              'title' => @songs[3]['title'],
-              'text' => @songs[3]['lyric'],
-              'actions' => {
-                'type' => 'message',
-                'label' => 'この曲ですか？',
-                'text' => 'お役に立ててよかったです！'
-              }
-            }
-          ]
-          template = {
-            'type' => 'carousel',
-            'columns' => columns
+        columns = []
+        # @songs.each do |song|
+        column = {
+          'title' => 'タイトル最大40文字',
+          'text' => @search_word,
+          'actions' => {
+            'type' => 'message',
+            'label' => 'この曲ですか？',
+            'text' => 'お役に立ててよかったです！'
           }
-          message = {
-            'type' => 'template',
-            'altText' => '検索結果が表示できません',
-            'template' => template
-          }
-        else
-          message = {
-            'type' => 'text',
-            'text' => @error
-          }
-        end
+        }
+        columns.push(column)
+        # end
+        template = {
+          'type' => 'carousel',
+          'columns' => columns
+        }
+        message = {
+          'type' => 'template',
+          'altText' => '検索結果が表示できません',
+          'template' => template
+        }
         client.reply_message(event['replyToken'], message)
       when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
