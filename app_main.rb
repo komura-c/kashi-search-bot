@@ -39,7 +39,7 @@ post '/callback' do
 
         search_lyric
 
-        if @error.present?
+        if @error.nil?
           message2 = {
             'type' => 'text',
             'text' => @error
