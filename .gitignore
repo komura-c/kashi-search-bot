@@ -79,3 +79,4 @@ pickle-email-*.html
 **.swp
 
 .env
+/.vscode

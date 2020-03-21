@@ -38,7 +38,7 @@ def search_lyric
       song_lyric = lyric.find_element(:tag_name, 'p')
       song_lyric = song_lyric.text
       song['lyric'] = song_lyric
-      @songs.push(song) if @songs.length < 10
+      @songs.push(song) if @songs.length < 9
     end
   rescue Selenium::WebDriver::Error::NoSuchElementError
     @error = 'すみません、エラーが発生しました'

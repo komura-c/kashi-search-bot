@@ -37,15 +37,14 @@ post '/callback' do
         if @error.nil?
           columns = []
           @songs.each do |song|
-            column = {
-              'title' => song['title'],
-              'text' => song['lyric'],
-              'actions' => {
-                'type' => 'message',
-                'label' => 'この曲ですか？',
-                'text' => 'お役に立ててよかったです！'
-              }
-            }
+            column = {}
+            column['title'] = song['title'],
+                              column['text'] = song['lyric'],
+                              column['actions'] = {
+                                'type' => 'message',
+                                'label' => 'この曲ですか？',
+                                'text' => 'お役に立ててよかったです！'
+                              }
             columns.push(column)
           end
           template = {
