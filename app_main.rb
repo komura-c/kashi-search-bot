@@ -31,6 +31,7 @@ post '/callback' do
       case event.type
       when Line::Bot::Event::MessageType::Text
         @search_word = event.message['text']
+
         message1 = {
           'type' => 'text',
           'text' => '検索しています…'
@@ -42,10 +43,9 @@ post '/callback' do
         if @error.nil?
           columns = []
           @songs.each do |song|
-            column = {
-              'title' => song['title'],
-              'text' => song['lyric']
-            }
+            column = {}
+            column['title'] = song['title']
+            column['text'] = song['lyric']
             columns.push(column)
           end
           template = {
@@ -63,7 +63,6 @@ post '/callback' do
             'text' => @error
           }
         end
-
         client.reply_message(event['replyToken'], message2)
       when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
