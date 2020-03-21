@@ -21,11 +21,10 @@ def search_lyric(search_word)
   result = driver.find_element(:id, 'search_list')
   song_info = result.find_elements(:tag_name, 'a')
   song_name = song_info[0]
-  song_name = song_name.text.to_i
+  song_name = song_name.text
   artist_name = song_info[1]
-  artist_name = artist_name.text.to_i
+  artist_name = artist_name.text
   @message = 'その曲は' << song_name << ' - ' << artist_name << 'ではないですか？'
-  # puts @message
   driver.close
   driver.quit
 end
