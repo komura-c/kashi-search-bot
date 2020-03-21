@@ -2,7 +2,7 @@
 
 require 'selenium-webdriver'
 
-def search_lyric(search_word)
+def search_lyric
   driver = Selenium::WebDriver.for :chrome
   driver.navigate.to 'https://www.uta-net.com/user/index_search/search1.html'
   wait = Selenium::WebDriver::Wait.new(timeout: 30)
@@ -13,8 +13,10 @@ def search_lyric(search_word)
     p 'no such element error!!'
     return
   end
-  keyword = search_word.split
-  search_box.send_keys(keyword)
+  keyword = @search_word.split
+  keyword.each do |word|
+    search_box.send_keys(word)
+  end
   search_box.submit
 
   wait.until { driver.find_element(:id, 'search_list').displayed? }
@@ -29,6 +31,3 @@ def search_lyric(search_word)
   driver.close
   driver.quit
 end
-
-# search_word = ''
-# search_lyric(search_word)

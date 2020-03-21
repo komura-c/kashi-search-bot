@@ -30,8 +30,8 @@ post '/callback' do
     when Line::Bot::Event::Message
       case event.type
       when Line::Bot::Event::MessageType::Text
-        search_word = event.message['text']
-        search_lyric(search_word)
+        @search_word = event.message['text']
+        search_lyric
         message = {
           type: 'text',
           text: @message
