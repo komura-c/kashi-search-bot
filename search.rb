@@ -13,8 +13,8 @@ def search_lyric(search_word)
     p 'no such element error!!'
     return
   end
-  search_word = search_word.split
-  search_box.send_keys(search_word)
+  keyword = search_word.split
+  search_box.send_keys(keyword)
   search_box.submit
 
   wait.until { driver.find_element(:id, 'search_list').displayed? }
@@ -25,8 +25,10 @@ def search_lyric(search_word)
   artist_name = song_info[1]
   artist_name = artist_name.text
   @message = 'その曲は' << song_name << ' - ' << artist_name << 'ではないですか？'
+  # puts @message
   driver.close
   driver.quit
 end
 
-search_lyric
+# search_word = ''
+# search_lyric(search_word)
