@@ -32,29 +32,29 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         @search_word = event.message['text']
 
-        # search_lyric
+        search_lyric
 
         columns = []
-        # @songs.each do |song|
-        column = {
-          'title' => 'タイトル最大40文字',
-          'text' => @search_word,
-          'actions' => {
-            'type' => 'message',
-            'label' => 'この曲ですか？',
-            'text' => 'お役に立ててよかったです！'
+        @songs.each do |song|
+          column = {
+            title: song['title'],
+            text: song['lyric'],
+            actions: {
+              type: 'message',
+              label: 'この曲ですか？',
+              text: 'お役に立ててよかったです！'
+            }
           }
-        }
-        columns.push(column)
-        # end
+          columns.push(column)
+        end
         template = {
-          'type' => 'carousel',
-          'columns' => columns
+          type: 'carousel',
+          columns: columns
         }
         message = {
-          'type' => 'template',
-          'altText' => '検索結果が表示できません',
-          'template' => template
+          type: 'template',
+          altText: '検索結果が表示できません',
+          template: template
         }
         client.reply_message(event['replyToken'], message)
       when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
